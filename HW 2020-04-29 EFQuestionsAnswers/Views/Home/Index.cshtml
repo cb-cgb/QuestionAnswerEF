@@ -1,0 +1,18 @@
+﻿@using EFQuestionAnswers.data
+@model IEnumerable<Question>
+
+<div class="container" style="margin-bottom:30px">
+
+    <a href="/home/NewQuestion" class="btn btn-info">New Question</a>
+   
+    @foreach(Question q in Model)
+    {
+        <div class="row card card-body" >
+            <p style=" text-align:right">Posted by @q.User.Name  on @q.Date.ToShortDateString() </p>
+            <p><a href="/Home/Question?questionId=@q.Id"><h2>@q.Title</h2></a> </p>
+            <p>@q.Text</p>
+        </div>
+    }
+
+
+</div> 

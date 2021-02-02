@@ -1,0 +1,42 @@
+﻿
+@if (TempData["Message"] != null) //(!String.IsNullOrEmpty(TempData["Message"))
+{
+    <div id="alert" class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["Success-Message"] != null) //(!String.IsNullOrEmpty(TempData["Message"))
+{
+    <div id="alert" class="alert alert-success" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Message"]
+    </div>
+}
+
+
+
+<div style="text-align:center">
+    <h1>Login</h1>
+
+    <div class="row card card card-body border-success">
+        <form method="post" action="/account/login">
+            <input type="text" name="email" class="form-control" placeholder="Enter your email" />
+            <input type="password" name="passwordhash" class="form-control" placeholder="Password" />
+            <input type="hidden" name="returnUrl" value="@ViewBag.Message" />
+            <button class="btn btn-success">Login</button>
+        </form>
+
+        <h4>Not yet registered? <a href="/account/signup">Sign up here!</a></h4>
+
+    </div>
+
+
+</div>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>HW_2020_04_29_EFQuestionsAnswers</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="EFQuestionAnswers.data\**" />
+    <Content Remove="EFQuestionAnswers.data\**" />
+    <EmbeddedResource Remove="EFQuestionAnswers.data\**" />
+    <None Remove="EFQuestionAnswers.data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EFQuestionAnswers.data\EFQuestionAnswers.data.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,76 @@
+﻿@using EFQuestionAnswers.data;
+@model QuestionViewModel;
+
+<h2>QUESTION</h2>
+
+<div id="questions" class="card card-body">
+    <p style="text-align:right">Submitted by @Model.Question.User.Email on @Model.Question.Date.ToShortDateString()  </p>
+
+    <h3>@Model.Question.Text</h3>
+    <hr />
+
+    <span>Tags:</span>
+    @{string tags = null;}
+
+
+    @foreach (QuestionTags qt in Model.Question.QuestionTags)
+    {
+        <span class="col-form-label">@qt.Tag.Name</span>
+        tags += qt.Tag.Name + ' ';
+    }
+    <p><mark>@tags</mark></p>
+
+    <div style="text-align:right">
+        @*only allow to  like if user logged in AND didn't already like this question*@
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (!Model.Question.UserQuestionLikes.Any(u => u.UserId == Model.CurrentUserId))
+            {
+                <button id="btn-like-quest" class="btn btn-success" data-qid="@Model.Question.Id" data-uid="@Model.Question.UserId">LIKE!</button>
+            }
+        }
+        <p>Likes:<span id="likes-quest-count" data-qid="@Model.Question.Id"> @Model.Question.UserQuestionLikes.Count()</span></p>
+    </div>
+
+</div>
+
+<h2>ANSWERS</h2>
+
+@foreach (Answer a in Model.Question.Answers.OrderBy(a => a.Date))
+{
+
+    <div id="answers" class="row card card-body border-info">
+        <div style="text-align:right">
+            <p>Submitted by @a.User.Email on @a.Date.ToShortDateString()</p><br />
+            <p id="likes-answ-count" style="text-align:right">Likes: @a.UserAnswerLikes.Count() </p>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button id="btn-like-answ" class="btn btn-warning" data-aid="@a.Id" data-uid="@a.UserId" data-qid="@a.QuestionId">LIKE!</button>
+            }
+        </div>
+
+        <p>@a.Text</p> <br />
+    </div>
+}
+
+
+<div class="row" style="margin-top:30px">
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="card card-body">
+            <form method="post" action="/home/AddAnswer">
+                <textarea name="text" rows="10" style="width: 600px" class="form-control" placeholder="Post an answer!"></textarea>
+                <input type="hidden" value="@Model.Question.Id" name="questionId" />
+                <input type="hidden" value="@Model.Question.UserId" name="userId" />
+                <button class="btn btn-info">Post Answer</button>
+            </form>
+        </div>
+    }
+</div>
+
+
+@section scripts {
+    <script src="/js/question.js"></script>
+}
