@@ -69,7 +69,7 @@ namespace HW_2020_04_29_EFQuestionsAnswers.Controllers
            // var User = db.GetUserByEmail(User.Identity.Name);
             q.UserId = db.GetUserByEmail(User.Identity.Name).Id;
             db.AddQuestion(q, tagList);
-            return Redirect("/Home/Index");
+            return RedirectToAction("Index", new { id=q.Id });
 
 
         }
@@ -79,8 +79,7 @@ namespace HW_2020_04_29_EFQuestionsAnswers.Controllers
         {
             var db = new QuestionRepository(_conn);
             var user = db.GetUserByEmail(User.Identity.Name);
-            db.AddLikeQuestion(questionId,user.Id);
-           
+            db.AddLikeQuestion(questionId,user.Id);          
 
         }
 
@@ -107,17 +106,25 @@ namespace HW_2020_04_29_EFQuestionsAnswers.Controllers
         {
             var db = new QuestionRepository(_conn);
             db.AddAnswer(a);
-            return Redirect($"/home/Question?questionId={a.QuestionId}");
+            //return Redirect($"/home/Question?questionId={a.QuestionId}"); //this works fine but using redirectotoaction
+            return RedirectToAction("Question", new { questionid = a.QuestionId });
         }
 
         [Authorize] [HttpPost]
-        public IActionResult AddAnswerLike(UserAnswerLikes u)
-        {
-            var db = new QuestionRepository(_conn);
-            var countLikes=db.AddLikeAnswer(u);
-            //var countLikes = u.Answer.UserAnswerLikes.Count();
-            return Json(countLikes);
+          public void AddAnswerLike( int answerId)
+            {
+                var db = new QuestionRepository(_conn);
+                var user = db.GetUserByEmail(User.Identity.Name);
+                db.AddLikeAnswer(answerId, user.Id);
+            }
 
+        public IActionResult GetAnswerLikes(int answerId)
+        {
+
+            var db = new QuestionRepository(_conn);
+            var countLikes = db.GetAnswerLikes(answerId);
+            return Json(countLikes);
+            //return Json(new { countLikes = db.GetQuestionLikes(questionId) });
         }
 
     }

@@ -42,7 +42,7 @@
     <div id="answers" class="row card card-body border-info">
         <div style="text-align:right">
             <p>Submitted by @a.User.Email on @a.Date.ToShortDateString()</p><br />
-            <p id="likes-answ-count" style="text-align:right">Likes: @a.UserAnswerLikes.Count() </p>
+            <p id="likes-answ-count" data-aid="@a.Id" style="text-align:right">Likes: @a.UserAnswerLikes.Count() </p>
 
             @if (User.Identity.IsAuthenticated)
             {

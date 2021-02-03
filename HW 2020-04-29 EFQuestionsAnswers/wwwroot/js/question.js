@@ -1,5 +1,6 @@
 ﻿$(() => {
 
+    //like a question
     $("#btn-like-quest").on('click',function () {
 
         const questionId = $(this).data('qid');
@@ -9,7 +10,7 @@
         $.post("/home/AddQuestionLike", { questionId }, function () {
 
             //Update the likes count
-            updateLikes();
+            updateQuestionLikes();
 
             //disable the like button once the user liked it once already.
             $.get('/home/GetQuestionLikesForCurrentUser', { questionId, userId }, result => {
@@ -18,19 +19,60 @@
                 };
             });
         });
-        
-
     }); 
 
-    function updateLikes() {
+
+    //like an answer
+    $("#btn-like-answ").on('click', function () {
+        const answerId = $(this).data('aid');
+
+      //add a like
+        $.post("/home/AddAnswerLike", { answerId }, function () {
+            //Update the likes count
+            updateAnswerLikes();
+
+            //disable the like buttong onece the user liked it
+            $("#btn-like-answ").prop('disabled', true);
+        })
+
+    });
+
+
+    //run updateLikes every 2 seconds
+    setInterval(updateLikes, 2000);
+
+    //update both likes
+    function updateLikes()     {
+        updateQuestionLikes();
+        updateAnswerLikes();
+    }
+
+
+    //update count of questionlikes
+    function updateQuestionLikes() {
         const questionId = $("#likes-quest-count").data('qid');
-        $.get('/home/GetQuestionLikes',{questionId}, result => {
-            $("#likes-quest-count").text (result);
-            console.log(result);            
+
+        $.get('/home/GetQuestionLikes', { questionId }, result => {
+            $("#likes-quest-count").text(result);
+            console.log(`question countlike: ${result}`);
+        })
+    }
+
+    //update count of answerlikes
+    function updateAnswerLikes() {
+        const answerId = $("#likes-answ-count").data('aid');
+
+        $.get('/home/GetAnswerLikes', { answerId }, result => {
+            $("#likes-answ-count").text(result);
+            console.log(`answer likecount ${result}`);
         })
 
     }
+    
+       
+    
 
+   
     //const updateLikes = () => {
     //    const questionId = $("#likes-quest-count").data('qid');
     //    $.get('/home/GetQuestionLikes', { questionId }, result => {
@@ -42,25 +84,8 @@
     //};
 
    
-    setInterval(updateLikes, 2000);
 
-    //$("#answers").on('click','.answer', function () {
 
-    //    const la = {
-    //        answerId: $(this).data('aid'),
-    //        userId: $(this).data('uid'),
-    //        questionid: $(this).data('qid')
-    //    };
-
-    //    $.post("/home/AddAnswerLike", la, function () {
-    //        $("#likes-answ-count").val = obj.countLikes;
-    //        if (!obj.countLikes === null && obj.countikes !== 0) {
-    //            $(this).prop('disabled', true);
-    //        }
-            
-    //    })
-
-    //})
    
 
 });

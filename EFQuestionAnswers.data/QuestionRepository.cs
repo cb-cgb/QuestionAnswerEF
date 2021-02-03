@@ -43,6 +43,15 @@ namespace EFQuestionAnswers.data
             }
         }
 
+        public Answer GetAnswerById(int Id )
+        {
+            using (var context = new QuestionAnswerContext(_conn))
+            {
+                return context.Answers.Include(a=> a.UserAnswerLikes)
+                                         .FirstOrDefault(a =>  a.Id ==Id);
+            }
+        }
+
         private Tag CheckTagExists(String tag)
         {
             using (var context = new QuestionAnswerContext(_conn))
@@ -137,24 +146,27 @@ namespace EFQuestionAnswers.data
             }
         }
 
-        public int AddLikeAnswer(UserAnswerLikes la)
+        public void AddLikeAnswer(int answerId, int userId)
         {
             using (var context = new QuestionAnswerContext(_conn))
             {
                 context.UserAnswerLikes.Add(new UserAnswerLikes
                 {
-                    AnswerId = la.AnswerId,
-                    UserId = la.UserId
-                }); ;
+                    AnswerId = answerId,
+                    UserId = userId
+                }); 
                 context.SaveChanges();
-                return (la.Answer.UserAnswerLikes.Count());
-
-
             }
         }
 
-      
-
+        public int GetAnswerLikes(int answerId)
+        {
+            using (var context = new QuestionAnswerContext(_conn))
+            {
+                var answer = GetAnswerById(answerId);
+                return answer.UserAnswerLikes.Count();
+            }
+        }
 
         public void AddUser(User u)
         {
