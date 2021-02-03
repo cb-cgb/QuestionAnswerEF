@@ -9,7 +9,6 @@ namespace EFQuestionAnswers.data
 
     public class Question
     {
-        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
@@ -23,7 +22,6 @@ namespace EFQuestionAnswers.data
 
     public class User
     {
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
@@ -41,7 +39,6 @@ namespace EFQuestionAnswers.data
     }
     public class Answer
     {
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public String Text { get; set; }
         public int UserId { get; set; }
@@ -62,7 +59,6 @@ namespace EFQuestionAnswers.data
 
     public class Tag
     {
-        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public String Name { get; set; }
         public List <QuestionTags> QuestionTags { get; set; }
